@@ -1,0 +1,39 @@
+#include 'totvs.ch'
+#include 'protheus.ch'
+
+
+User Function zTDialog()
+
+Local oDlg // Variavel que recebera a chamada da classe TDialog
+Local oTButton1 // Variavel que armazenara a classe TButton
+Local oTButton2 // Variavel que armazenara a classe TButton
+Local oTButton3 // Variavel que armazenara a classe TButton
+Local oTButton4// Variavel que armazenara a classe TButton
+Local oTButton5 // Variavel que armazenara a classe TButton
+Local oTSay // Variavel que armazenara a classe TSay
+Local oFont1 // Variavel que armazenara a classe oFont
+Local oFont2 // Variavel que armazenara a classe oFont
+
+// TDialog 
+oDlg := TDialog():New(180,180,550,700,'Utilitários',,,,,CLR_RED,CLR_WHITE,,,.T.)
+
+
+// oFont
+oFont1 := TFont():New('Comic Sans MS',,16,,.T.,,,,,.T.,.T.)
+oFont2 := TFont():New('Arial Black',,12,.F.,,,,,.F.,.F.)
+
+
+// TButton
+oTButton1 := TButton():New(20, 50, "Clientes",oDlg,{|| Mata030()}, 60,15,,oFont2,.F.,.T.,.F.,,.F.,,,.F. )
+oTButton2 := TButton():New(40, 50, "Fornecedores",oDlg,{|| Mata020()}, 60,15,,oFont2,.F.,.T.,.F.,,.F.,,,.F. )
+oTButton3 := TButton():New(60, 50, "Bancos",oDlg,{|| Mata070()}, 60,15,,oFont2,.F.,.T.,.F.,,.F.,,,.F. )
+oTButton4 := TButton():New(80, 50, "Produtos",oDlg,{|| Mata010()}, 60,15,,oFont2,.F.,.T.,.F.,,.F.,,,.F. )
+oTButton5 := TButton():New(100, 50, "Fechar",oDlg,{|| oDlg:End()}, 60,15,,oFont2,.F.,.T.,.F.,,.F.,,,.F. )
+
+// TSay
+oTSay := TSay():New(05,50,{||'Telas utilitárias para o protheus'},oDlg,,oFont1,,,,.T.,CLR_RED,CLR_WHITE,300,50)
+
+	
+oDlg:Activate(,,,)
+
+return
