@@ -1,0 +1,45 @@
+#include 'totvs.ch'
+#include 'protheus.ch'
+
+User Function zTget()
+    Local oDlg
+    Local oSayNome, oSayEndereco, oSayCidade
+    Local oGetNome, oGetEndereco, oGetCidade
+    Local oButton
+    Local aSize := MsAdvSize()
+    
+    // Variáveis para armazenar o que foi digitado
+    local tGetNome := Space(15)
+    local tGetEndereco := Space(30)
+    local tGetCidade := Space(20)
+
+    // Criando a janela de diálogo
+    oDlg := TDialog():New(aSize[7],aSize[1],aSize[6],aSize[5],'Cadastro de usuário',,,,,CLR_BLACK,CLR_WHITE,,,.T.)
+    
+    // Componentes de entrada de texto
+    oSayNome := TSay():New(10,10,{||'Digite o seu nome'},oDlg,,,,,,.T.,CLR_BLACK,CLR_WHITE,300,50)
+    oGetNome := TGet():New(20,10,{|u|if(PCount()==0,tGetNome,tGetNome:=u)},oDlg,60,10,"@",,0,,,.F.,,.T.,,.F.,,.F.,.F.,,.F.,.F.,,tGetNome,,,, )
+    
+    oSayEndereco := TSay():New(10,100,{||'Digite seu endereço'},oDlg,,,,,,.T.,CLR_BLACK,CLR_WHITE,300,50)
+    oGetEndereco := TGet():New(20,100,{|u|if(PCount()==0,tGetEndereco,tGetEndereco:=u)},oDlg,80,10,"@",,0,,,.F.,,.T.,,.F.,,.F.,.F.,,.F.,.F.,,tGetEndereco,,,,)
+    
+    oSayCidade := TSay():New(10,200,{||'Digite sua cidade'},oDlg,,,,,,.T.,CLR_BLACK,CLR_WHITE,300,50)
+    oGetCidade := TGet():New(20,200,{|u|if(PCount()==0,tGetCidade,tGetCidade:=u)},oDlg,60,10,"@",,0,,,.F.,,.T.,,.F.,,.F.,.F.,,.F.,.F.,,tGetCidade,,,,)
+    
+    // Botão para mostrar todas as informações
+    oButton := TButton():New(50, 10, "Mostrar informações", oDlg, {|| ShowAllInfo(tGetNome, tGetEndereco, tGetCidade)}, 60,15,,,.F.,.T.,.F.,,.F.,,,.F. )
+
+    // Ativando a janela de diálogo
+    oDlg:activate(,,,.F.)
+
+Return 
+
+
+    
+Static Function ShowAllInfo(cNome, cEndereco, cCidade)
+    Local cMessage
+    cMessage := "Nome: " + cNome + Chr(13) + ;
+                "Endereço: " + cEndereco + Chr(13) + ;
+                "Cidade: " + cCidade
+    MsgInfo(cMessage, "Informações Digitadas")
+Return

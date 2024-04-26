@@ -1,7 +1,7 @@
 #include 'totvs.ch'
 #include 'protheus.ch'
 
-User Function zTDialog()
+User Function zMsAdvSize()
 
 Local oDlg // Variavel que recebera a chamada da classe TDialog
 Local oTButton1 // Variavel que armazenara a classe TButton
@@ -12,9 +12,9 @@ Local oTButton5 // Variavel que armazenara a classe TButton
 Local oTSay // Variavel que armazenara a classe TSay
 Local oFont1 // Variavel que armazenara a classe oFont
 Local oFont2 // Variavel que armazenara a classe oFont
-
+Local aSize := MsAdvSize() // função interna que retorna um array com as coordenadas/dimensoes da tela
 // TDialog 
-oDlg := TDialog():New(180,180,550,700,'Utilitários',,,,,CLR_RED,CLR_WHITE,,,.T.)
+oDlg := TDialog():New(aSize[7],aSize[1],aSize[6],aSize[5],'Utilitários',,,,,CLR_RED,CLR_WHITE,,,.T.)
 
 // oFont
 oFont1 := TFont():New('Comic Sans MS',,16,,.T.,,,,,.T.,.T.)
