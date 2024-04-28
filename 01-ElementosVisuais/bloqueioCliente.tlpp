@@ -1,0 +1,61 @@
+#include 'totvs.ch'
+#include 'protheus.ch'
+
+User Function BloqueioCliente()
+
+local oDlg // Variavel que recebera a chamada da classe TDialog
+local oSayCliente, oSayLoja
+local oGetCliente, oGetLoja
+local oButtonBloqueia, oButtonSair, oButtonDesbloqueia
+
+local cGetCliente := Space(6)
+local cGetLoja := Space(02)
+
+
+// TDialog 
+oDlg := TDialog():New(0,0,200,500,'Bloqueio de Clientes',,,,,CLR_RED,CLR_WHITE,,,.T.)
+
+oSayCliente := TSay():New(20,30,{||'Cliente'},oDlg,,,,,,.T.,CLR_BLACK,CLR_WHITE,500,100)
+oGetCliente := TGet():New(30,30,{|u|if(PCount()==0,cGetCliente,cGetCliente:=u)},oDlg,50,10,"@",,0,,,.F.,,.T.,,.F.,,.F.,.F.,,.F.,.F.,,cGetCliente,,,,)
+
+oGetCliente:cF3 := 'SA1'
+	
+oSayLoja := TSay():New(20,120,{||'Loja'},oDlg,,,,,,.T.,CLR_BLACK,CLR_WHITE,500,100)
+oGetLoja := TGet():New(30,120,{|u|if(PCount()==0,cGetLoja,cGetLoja:=u)},oDlg,20,10,"@",,0,,,.F.,,.T.,,.F.,,.F.,.F.,,.F.,.F.,,cGetLoja,,,,)
+
+oButtonBloqueia := TButton():New(50,30,"Bloquear",oDlg,{|| Bloquear(cGetCliente, cGetLoja) }, 40,15,,,.F.,.T.,.F.,,.F.,,,.F. )
+oButtonDesbloqueia := TButton():New(70,30,"Desbloquear",oDlg,{|| Desbloqueia(cGetCliente, cGetLoja) }, 40,15,,,.F.,.T.,.F.,,.F.,,,.F. )
+oButtonSair := TButton():New(50,120,"Sair",oDlg,{|| oDlg:End() }, 30,15,,,.F.,.T.,.F.,,.F.,,,.F. )
+
+
+oDlg:Activate(,,,.T.)
+ 
+return
+ 
+
+
+Static Function Bloquear(cCod, cLoja)
+
+ DbSelectArea("SA1")
+ SA1->(DbSeek(xFilial("SA1")+cCod+cLoja))
+
+ RecLock("SA1",.F.)
+   SA1->A1_MSBLQL := "1"
+ MsUnlock()
+
+ MsgInfo("O cliente "+cCod+ " está sendo bloqueado")
+
+return
+
+Static Function Desbloqueia(cCod, cLoja)
+
+ DbSelectArea("SA1")
+ SA1->(DbSeek(xFilial("SA1")+cCod+cLoja))
+
+ RecLock("SA1",.F.)
+   SA1->A1_MSBLQL := "2"
+ MsUnlock()
+
+ MsgInfo("O cliente "+cCod+ " está sendo desbloqueado")
+
+return
