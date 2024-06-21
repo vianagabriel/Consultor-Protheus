@@ -1,0 +1,69 @@
+#include 'totvs.ch'
+#include 'Protheus.ch'
+
+User Function Projeto01()
+
+	Private oDlg1
+	Private cTituloJanela := "Projeto01 - Priemria tela em ADVPL Protheus"
+
+    /* Variavel que recebe a funcao MsAdvSize()*/
+	Private aSize := MsAdvSize()
+
+	//Declarando as variaveis do folder
+	Private oFolder, aFolder
+
+	//Variaveis referentes aos onjetos do FOLDER01(DADOS PESSOAIS)
+
+	//Variaveis para construcao dos TGet
+	Private oSayNome, oSayNomeReduzido, oSayDtNasc, oSayDDDCel, oSayCel
+	Private oGetNome, oGetNomeReduzido, oGetDtNasc, oGetDDDCel, oGetCel
+	Private cGetNome, cGetNomeReduzido, cGetCel, cGetDDDCel
+	Private dGetDataNasc
+
+	//Variavel para contrucao do tGroup
+	Private oGroupSexo
+    
+	//Variavel para construcao das selecoes dentro do TGroup
+	Private aSexo    := {"Masculino","Feminino"}
+	Private nSexo    := 1
+	Private oRadioSexo 
+
+	//Variaveis referentes aos onjetos do FOLDER02(ENDERECO)
+
+
+	//Variaveis referentes aos onjetos do FOLDER01(OUTROS)
+
+	// Janela principal do programa
+	oDlg1             := TDialog():New(aSize[7],aSize[1],aSize[6],aSize[5],cTituloJanela,,,,,CLR_BLACK,CLR_WHITE,,,.T.)
+
+	aFolder           := {'Dados Pessoais','Endereço','Outros'}
+	oFolder           := TFolder():New(0,aSize[1],aFolder,aFolder,oDlg1,,,,.T.,,aSize[5],200)
+
+	//Elementos visuais que compoem o Folder/Pasta01 Dados Pessoais
+	oSayNome         := TSay():New(01,05,{||'Nome'},oFolder:aDialogs[1],,,,,,.T.,CLR_BLUE,CLR_WHITE,300,20)
+	cGetNome         := space(30)
+	oGetNome         := TGet():New(10,05,{|u|if(PCount()==0,cGetNome,cGetNome:=u)},oFolder:aDialogs[1],096,009,"@!",,0,,,.F.,,.T.,,.F.,,.F.,.F.,,.F.,.F.,,cGetNome,,,, )
+
+	oSayNomeReduzido := TSay():New(01,110,{||'Nome Reduzido'},oFolder:aDialogs[1],,,,,,.T.,CLR_BLUE,CLR_WHITE,300,20)
+	cGetNomeReduzido := space(30)
+	oGetNomeReduzido := TGet():New(10,110,{|u|if(PCount()==0,cGetNomeReduzido,cGetNomeReduzido:=u)},oFolder:aDialogs[1],096,009,"@!",,0,,,.F.,,.T.,,.F.,,.F.,.F.,,.F.,.F.,,cGetNomeReduzido,,,, )
+
+	oSayDtNasc       := TSay():New(01,220,{||'Data de nasciemnto'},oFolder:aDialogs[1],,,,,,.T.,CLR_BLUE,CLR_WHITE,300,20)
+	dGetDataNasc     := Date()
+	oGetDtNasc       := TGet():New(10,220,{|u|if(PCount()==0,dGetDataNasc,dGetDataNasc:=u)},oFolder:aDialogs[1],096,009,,,0,,,.F.,,.T.,,.F.,,.F.,.F.,,.F.,.F.,,,,,,.T.)
+
+    oSayDDDCel       := TSay():New(01,320,{||'DDD'},oFolder:aDialogs[1],,,,,,.T.,CLR_BLUE,CLR_WHITE,300,20)
+    oGetDDDCel       := space(2)
+    cGetDDDCel       := TGet():New(10,320,{|u|if(PCount()==0,cGetDDDCel,cGetDDDCel:=u)},oFolder:aDialogs[1],20,009,"",,0,,,.F.,,.T.,,.F.,,.F.,.F.,,.F.,.F.,,cGetDDDCel,,,, )
+    
+    oSayCel          := TSay():New(01,360,{||'Celular'},oFolder:aDialogs[1],,,,,,.T.,CLR_BLUE,CLR_WHITE,300,20)
+    oGetCel          := space(11)
+    cGetCel          := TGet():New(10,360,{|u|if(PCount()==0,cGetCel,cGetCel:=u)},oFolder:aDialogs[1],40,009,"@E 9-9999-9999",,0,,,.F.,,.T.,,.F.,,.F.,.F.,,.F.,.F.,,cGetCel,,,, )
+    
+    oGroupSexo       := TGroup():New(01,420,50,550,'Sexo',oFolder:aDialogs[1],,,.T.)
+
+	//Ativacao da janela
+	oDlg1:Activate(,,,.T.)
+
+
+return
