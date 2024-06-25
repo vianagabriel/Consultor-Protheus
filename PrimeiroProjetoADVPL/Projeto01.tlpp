@@ -54,24 +54,24 @@ User Function Projeto01()
 	   Variaveis referente aos objetos do FOLDER03(OUTROS)
 	   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	*/
-	 
+
 	Private oSayEstadoCivil
 	Private aEstadoCivil := {"Solteiro","Casado","Separado","Divorciado","Viúvo"}
 	Private cEstadoCivil := aEstadoCivil[1]
 	Private oComboEstadoCivil
-    Private oGroupStatusPCD
+	Private oGroupStatusPCD
 	Private aStatusPCD    := {"Sim","Não"}
 	Private nStatusPCD    := 1
 	Private oRadioStatusPCD
-    Private oGroupLinguagens
+	Private oGroupLinguagens
 
 	Private oCheckAdvpl
 	Private oCheckJava
 	Private oCheckCSharp
-    Private oCheckPython
+	Private oCheckPython
 
-    Private lCheckAdvpl  := .F.
-    Private lCheckJava   := .F.
+	Private lCheckAdvpl  := .F.
+	Private lCheckJava   := .F.
 	Private lCheckCSharp := .F.
 	Private lCheckPython := .F.
 
@@ -80,10 +80,24 @@ User Function Projeto01()
 	Private oTButtonAba3
 
 
-    Private oSayMultiGetObs
+	Private oSayMultiGetObs
 	Private oTMultiGetObs
 	Private cMultiGetObs
 
+    /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	    Variaveis que estão fora das abas
+	   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	*/
+
+	Private oButtonIncluir
+	Private oButtonAlterar
+	Private oButtonConsultar
+	Private oButtonExcluir
+
+	Private oBmpIncluir
+	Private oBmpAlterar
+	Private oBmpConsultar
+	Private oBmpExcluir
 
 
 	/* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -123,10 +137,10 @@ User Function Projeto01()
 	cGetCPF              := space(14)
 	oGetCPF              := TGet():New(35,05,{|u|if(PCount()==0,cGetCPF,cGetCPF:=u)},oFolder:aDialogs[1],096,009,"@E 999.999.999-99",,0,,,.F.,,.T.,,.F.,,.F.,.F.,,.F.,.F.,,cGetCPF,,,, )
 
-    oGroupSexo           := TGroup():New(01,420,50,550,'Sexo',oFolder:aDialogs[1],,,.T.)
+	oGroupSexo           := TGroup():New(01,420,50,550,'Sexo',oFolder:aDialogs[1],,,.T.)
 	oRadioSexo           := TRadMenu():New (10,425,aSexo,{|u|Iif (PCount()==0,nSexo,nSexo:=u)},oFolder:aDialogs[1],,,,,,,,60,20,,,,.T.)
 
-    oTButtonAba1         := TButton():New(75,05, "Validar dados pessoais",oFolder:aDialogs[1],{|| MostrarDadosPessoais()}, 70,15,,,.F.,.T.,.F.,,.F.,,,.F. )
+	oTButtonAba1         := TButton():New(75,05, "Validar dados pessoais",oFolder:aDialogs[1],{|| MostrarDadosPessoais()}, 70,15,,,.F.,.T.,.F.,,.F.,,,.F. )
 
 	/* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	    SEGUNDA ABA ----- ENDERECO
@@ -155,7 +169,7 @@ User Function Projeto01()
 	cGetCidade           := space(30)
 	oGetCidade           := TGet():New(35,75,{|u|if(PCount()==0,cGetCidade,cGetCidade:=u)},oFolder:aDialogs[2],070,009,"@!",,0,,,.F.,,.T.,,.F.,,.F.,.F.,,.F.,.F.,,cGetCidade,,,, )
 
-    oTButtonAba2         := TButton():New(75,05, "Validar endereço",oFolder:aDialogs[2],{|| MostrarDadosDoEndereco()}, 70,15,,,.F.,.T.,.F.,,.F.,,,.F. )
+	oTButtonAba2         := TButton():New(75,05, "Validar endereço",oFolder:aDialogs[2],{|| MostrarDadosDoEndereco()}, 70,15,,,.F.,.T.,.F.,,.F.,,,.F. )
 
 	/* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	    TERCEIRA ABA ---- OUTROS
@@ -164,24 +178,42 @@ User Function Projeto01()
 	oSayEstadoCivil      := TSay():New(01,05,{||'Estado Civil'},oFolder:aDialogs[3],,,,,,.T.,CLR_BLUE,CLR_WHITE,300,20)
 	oComboEstadoCivil    := TComboBox():New(10,05,{|u|if(PCount()>0,cEstadoCivil:=u,cEstadoCivil)},aEstadoCivil,80,20,oFolder:aDialogs[3],,,,,,.T.,,,,,,,,,'cEstadoCivil')
 
-    oGroupStatusPCD      := TGroup():New(01,100,50,200,'Possui Deficiência?',oFolder:aDialogs[3],,,.T.)
+	oGroupStatusPCD      := TGroup():New(01,100,50,200,'Possui Deficiência?',oFolder:aDialogs[3],,,.T.)
 	oRadioStatusPCD      := TRadMenu():New (10,105,aStatusPCD,{|u|Iif (PCount()==0,nStatusPCD,nStatusPCD:=u)},oFolder:aDialogs[03],,,,,,,,60,20,,,,.T.)
 
-    oGroupLinguagens     := TGroup():New(01,220,55,340,'Linguagens que domina',oFolder:aDialogs[3],,,.T.)
-	  
-    oCheckAdvpl          := TCheckBox():New(10,225,'ADVPL',{||lCheckAdvpl},oFolder:aDialogs[3],100,210,,{|| lCheckAdvpl := !lCheckAdvpl},,,,,,.T.,,,)
-    oCheckJava           := TCheckBox():New(20,225,'Java',{||lCheckJava},oFolder:aDialogs[3],100,210,,{|| lCheckJava := !lCheckJava},,,,,,.T.,,,)
-    oCheckCSharp         := TCheckBox():New(30,225,'CSharp',{||lCheckCSharp},oFolder:aDialogs[3],100,210,,{|| lCheckCSharp := !lCheckCSharp},,,,,,.T.,,,)
-    oCheckPython         := TCheckBox():New(40,225,'Python',{||lCheckPython},oFolder:aDialogs[3],100,210,,{|| lCheckPython := !lCheckPython},,,,,,.T.,,,)
+	oGroupLinguagens     := TGroup():New(01,220,55,340,'Linguagens que domina',oFolder:aDialogs[3],,,.T.)
 
-    oTButton             := TButton():New(15,280, "Todas",oFolder:aDialogs[3],{||lCheckAdvpl := .T., lCheckCSharp := .T., lCheckJava := .T., lCheckPython := .T.}, 40,10,,,.F.,.T.,.F.,,.F.,,,.F. )
+	oCheckAdvpl          := TCheckBox():New(10,225,'ADVPL',{||lCheckAdvpl},oFolder:aDialogs[3],100,210,,{|| lCheckAdvpl := !lCheckAdvpl},,,,,,.T.,,,)
+	oCheckJava           := TCheckBox():New(20,225,'Java',{||lCheckJava},oFolder:aDialogs[3],100,210,,{|| lCheckJava := !lCheckJava},,,,,,.T.,,,)
+	oCheckCSharp         := TCheckBox():New(30,225,'CSharp',{||lCheckCSharp},oFolder:aDialogs[3],100,210,,{|| lCheckCSharp := !lCheckCSharp},,,,,,.T.,,,)
+	oCheckPython         := TCheckBox():New(40,225,'Python',{||lCheckPython},oFolder:aDialogs[3],100,210,,{|| lCheckPython := !lCheckPython},,,,,,.T.,,,)
+
+	oTButton             := TButton():New(15,280, "Todas",oFolder:aDialogs[3],{||lCheckAdvpl := .T., lCheckCSharp := .T., lCheckJava := .T., lCheckPython := .T.}, 40,10,,,.F.,.T.,.F.,,.F.,,,.F. )
 	oTButton2            := TButton():New(30,280, "Nenhuma",oFolder:aDialogs[3],{||lCheckAdvpl := .F., lCheckCSharp := .F., lCheckJava := .F., lCheckPython := .F.}, 40,10,,,.F.,.T.,.F.,,.F.,,,.F. )
 
-    oSayMultiGetObs      := TSay():New(01,360,{||'Observações'},oFolder:aDialogs[3],,,,,,.T.,CLR_BLUE,CLR_WHITE,300,20)
-    oTMultiGetObs        := tMultiget():new(10,360,{| u | if( pCount() > 0, cMultiGetObs := u, cMultiGetObs )},oFolder:aDialogs[3],200,80,,,,,,.T.)
+	oSayMultiGetObs      := TSay():New(01,360,{||'Observações'},oFolder:aDialogs[3],,,,,,.T.,CLR_BLUE,CLR_WHITE,300,20)
+	oTMultiGetObs        := tMultiget():new(10,360,{| u | if( pCount() > 0, cMultiGetObs := u, cMultiGetObs )},oFolder:aDialogs[3],200,80,,,,,,.T.)
 
-    oTButtonAba3         := TButton():New(75,05, "Outras informações",oFolder:aDialogs[3],{||MostrarOutrosDados()}, 70,15,,,.F.,.T.,.F.,,.F.,,,.F. )
+	oTButtonAba3         := TButton():New(75,05, "Outras informações",oFolder:aDialogs[3],{||MostrarOutrosDados()}, 70,15,,,.F.,.T.,.F.,,.F.,,,.F. )
+
+
+	/* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	    Elementos que estão fora do folder (estão na janela principal)
+	   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	*/
     
+	oBmpIncluir           := TBitmap():New(250, 30, 142, 142, NIL, "C:\TOTVS\Protheus\1212210\protheus_data\system\incluir.bmp", .T., oDlg1,{||}, NIL, .F., .F., NIL, NIL, .F., NIL, .T., NIL, .F.)
+	oButtonIncluir        := TButton():New(280,20, "Incluir",oDlg1,{||}, 40,15,,,.F.,.T.,.F.,,.F.,,,.F. )
+
+    oBmpAlterar           := TBitmap():New(250, 90, 142, 142, NIL, "C:\TOTVS\Protheus\1212210\protheus_data\system\alterar.bmp", .T., oDlg1,{||}, NIL, .F., .F., NIL, NIL, .F., NIL, .T., NIL, .F.)
+	oButtonAlterar        := TButton():New(280,80, "Alterar",oDlg1,{||}, 40,15,,,.F.,.T.,.F.,,.F.,,,.F. )
+
+    oBmpConsultar         := TBitmap():New(250, 150, 142, 142, NIL, "C:\TOTVS\Protheus\1212210\protheus_data\system\consultar.bmp", .T., oDlg1,{||}, NIL, .F., .F., NIL, NIL, .F., NIL, .T., NIL, .F.)
+	oButtonConsultar      := TButton():New(280,140, "Consultar",oDlg1,{||}, 40,15,,,.F.,.T.,.F.,,.F.,,,.F. )
+
+    oBmpExcluir           := TBitmap():New(250,210, 142, 142, NIL, "C:\TOTVS\Protheus\1212210\protheus_data\system\excluir.bmp", .T., oDlg1,{||}, NIL, .F., .F., NIL, NIL, .F., NIL, .T., NIL, .F.)
+	oButtonExcluir        := TButton():New(280,200, "Excluir",oDlg1,{||}, 40,15,,,.F.,.T.,.F.,,.F.,,,.F. )
+
 	/* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	    Ativacao do TDialog
 	   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -193,30 +225,30 @@ return
 
 
 Static Function MostrarDadosPessoais()
- msgInfo("Nome: "+cGetNome+Chr(13)+Chr(10)+;
-         "Nome Reduzido: "+cGetNomeReduzido+Chr(13)+Chr(10)+;
-		 "Data de Nascimento: "+DToC(dGetDataNasc)+Chr(13)+Chr(10)+;
-		 "Telefone: "+cGetDDDCel+"-"+cGetCel+Chr(13)+Chr(10)+;
-		 "Sexo: "+aSexo[nSexo]+Chr(13)+Chr(10)+;
-		 "CPF: "+cGetCPF,"Dados Pessoais")
-Return 
+	msgInfo("Nome: "+cGetNome+Chr(13)+Chr(10)+;
+		"Nome Reduzido: "+cGetNomeReduzido+Chr(13)+Chr(10)+;
+		"Data de Nascimento: "+DToC(dGetDataNasc)+Chr(13)+Chr(10)+;
+		"Telefone: "+cGetDDDCel+"-"+cGetCel+Chr(13)+Chr(10)+;
+		"Sexo: "+aSexo[nSexo]+Chr(13)+Chr(10)+;
+		"CPF: "+cGetCPF,"Dados Pessoais")
+Return
 
 Static Function MostrarDadosDoEndereco()
- msgInfo("Endereço: "+cGetEndereco+Chr(13)+Chr(10)+;
-         "Bairro: "+cGetBairro+Chr(13)+Chr(10)+;
-		 "Imovel: "+cImovel+Chr(13)+Chr(10)+;
-		 "Estado: "+cEstado+Chr(13)+Chr(10)+;
-		 "Cidade: "+cGetCidade,"Dados do endereço")
-Return 
+	msgInfo("Endereço: "+cGetEndereco+Chr(13)+Chr(10)+;
+		"Bairro: "+cGetBairro+Chr(13)+Chr(10)+;
+		"Imovel: "+cImovel+Chr(13)+Chr(10)+;
+		"Estado: "+cEstado+Chr(13)+Chr(10)+;
+		"Cidade: "+cGetCidade,"Dados do endereço")
+Return
 
 
 Static Function MostrarOutrosDados()
- msgInfo("Estado Civil: "+cEstadoCivil+Chr(13)+Chr(10)+;
-         "Possui Deficiência: "+aStatusPCD[nStatusPCD]+Chr(13)+Chr(10)+;
-		 "ADVPL: "+IIF(lCheckAdvpl,"Sim","Não")+Chr(13)+Chr(10)+;
-		 "Java: "+IIF(lCheckJava,"Sim","Não")+Chr(13)+Chr(10)+;
-		 "CSharp: "+IIF(lCheckCSharp,"Sim","Não")+Chr(13)+Chr(10)+;
-		 "Python: "+IIF(lCheckPython,"Sim","Não")+Chr(13)+Chr(10)+;
-		 "Observações: "+cMultiGetObs,"Dados do endereço")
+	msgInfo("Estado Civil: "+cEstadoCivil+Chr(13)+Chr(10)+;
+		"Possui Deficiência: "+aStatusPCD[nStatusPCD]+Chr(13)+Chr(10)+;
+		"ADVPL: "+IIF(lCheckAdvpl,"Sim","Não")+Chr(13)+Chr(10)+;
+		"Java: "+IIF(lCheckJava,"Sim","Não")+Chr(13)+Chr(10)+;
+		"CSharp: "+IIF(lCheckCSharp,"Sim","Não")+Chr(13)+Chr(10)+;
+		"Python: "+IIF(lCheckPython,"Sim","Não")+Chr(13)+Chr(10)+;
+		"Observações: "+cMultiGetObs,"Dados do endereço")
 
 Return
