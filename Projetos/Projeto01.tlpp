@@ -116,7 +116,7 @@ User Function Projeto01()
 	*/
 	oSayCod             := TSay():New(01,05,{||'Código'},oFolder:aDialogs[1],,,,,,.T.,CLR_BLUE,CLR_WHITE,300,20)
 	cGetCod             := space(6)
-	oGetCod             := TGet():New(10,05,{|u|if(PCount()==0,cGetCod,cGetCod:=u)},oFolder:aDialogs[1],30,009,"@!",,0,,,.F.,,.T.,,.F.,,.F.,.F.,,.F.,.F.,,cGetCod,,,, )
+	oGetCod             := TGet():New(10,05,{|u|if(PCount()==0,cGetCod,cGetCod:=u)},oFolder:aDialogs[1],30,009,"@ 999999",,0,,,.F.,,.T.,,.F.,,.F.,.F.,,.F.,.F.,,cGetCod,,,, )
 	oGetCod:cf3         := "SZ1"
 
 	oSayNome             := TSay():New(26,05,{||'Nome'},oFolder:aDialogs[1],,,,,,.T.,CLR_BLUE,CLR_WHITE,300,20)
@@ -235,7 +235,7 @@ Static Function IncluirUsuarioSZ1()
 
 	dbSelectArea("SZ1")// Selecionado a área de trabalho com o dbSelectArea
 
-	dbGoTop()
+	dbGoTop()// Posiciona no primeiro registro da area de trabalho neste caso a SZ1
 
 	// Verifica se alguns campos de cada aba obrigatórios estão vazios, pois está sendo presupondo que o usuário com verificando que da erro por falta de preenchimento preenchera todos os campos
 	IF Empty(cGetCod) .OR. Empty(cGetNome) .Or. Empty(cGetEndereco) .OR. Empty(cEstadoCivil)
@@ -244,9 +244,9 @@ Static Function IncluirUsuarioSZ1()
 		Return
 	EndIf
 
-    IF DbSeek(xFilial("SZ1")+cGetCod)
-        FWAlertError("Usuário já cadastrado com esse código", "Erro")
-        dbCloseArea()
+    IF DbSeek(xFilial("SZ1")+cGetCod)// Verifica se dentro da tabela SZ1 já existe algum registro com este mesmo código que esta sendo recebido pela variavel cGetCod
+        FWAlertError("Usuário já cadastrado com esse código", "Erro")//Mensagem de erro
+        dbCloseArea()//Fechando a area de trabalho
         Return  
 	EndIf		
 
@@ -293,45 +293,47 @@ Return
 
 
 Static Function ConsultarUsuarioSZ1()
-
+  
   dbSelectArea("SZ1")
   dbSetOrder(1)
 
   IF dbSeek(xFilial("SZ1")+cGetCod)
     msgInfo("Usuário localizado", "Sucesso")
+    cGetCod          := SZ1->Z1_COD 
+    cGetNome         := SZ1->Z1_Nome     
+    cGetNomeReduzido := SZ1->Z1_NREDUZ
+	dGetDataNasc     := SZ1->Z1_DTNASC   
+	cGetDDDCel       := "("+SZ1->Z1_DDDCEL+")"    
+    cGetCel          := SUBSTR(SZ1->Z1_CELULAR,1,1)+"-"+SUBSTR(SZ1->Z1_CELULAR,2,4)+"-"+SUBSTR(SZ1->Z1_CELULAR,6,4)
+	nSexo            := Val(SZ1->Z1_SEXO)    
+	cGetCPF          := SUBSTR(SZ1->Z1_CPF,1,3)+"."+SUBSTR(SZ1->Z1_CPF,4,3)+"."+SUBSTR(SZ1->Z1_CPF,7,3)+"-"+SUBSTR(SZ1->Z1_CPF,10,2)
+  /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	    Dados do Endereco 
+     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  */    
+    cGetEndereco     := SZ1->Z1_ENDEREC	
+	cGetBairro       := SZ1->Z1_BAIRRO    
+	cImovel          := SZ1->Z1_IMOVEL    
+	cGetCEP          := SZ1->Z1_CEP
+	cEstado          := SZ1->Z1_ESTADO   
+    cGetCidade       :=	SZ1->Z1_CIDADE    
+  /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	    Dados Complementares 
+	 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  */    
+    cEstadoCivil     := SZ1->Z1_ESTIVI    
+	nStatusPCD       := Val(SZ1->Z1_DEFICIE)  
+	lCheckAdvpl      := IIF(SZ1->Z1_LADVPL = "1",.T.,.F.)  
+	lCheckJava       := IIF(SZ1->Z1_LJAVA = "1",.T.,.F.)
+	lCheckCSharp     := IIF(SZ1->Z1_LCSHARP = "1",.T.,.F.)
+	lCheckPython     := IIF(SZ1->Z1_PYTHON = "1",.T.,.F.)   
+    cMultiGetObs     := SZ1->Z1_OBS 
   Else
-    msgInfo("Usuário não localizado", "Sucesso")
+    alert("Usuário não localizado")
   EndIF	
 
-//     cGetCod          := SZ1->Z1_COD 
-//     cGetNome         := SZ1->Z1_Nome     
-//     cGetNomeReduzido := SZ1->Z1_NREDUZ
-// 	dGetDataNasc     := SZ1->Z1_DTNASC   
-// 	cGetDDDCel       := SZ1->Z1_DDDCEL    
-//     cGetCel          := SZ1->Z1_CELULAR
-// 	nSexo            := SZ1->Z1_SEXO     
-// 	cGetCPF          := SZ1->Z1_CPF
-//   /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-// 	    Dados do Endereco 
-//      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-//   */    
-//     cGetEndereco     := SZ1->Z1_ENDEREC	
-// 	cGetBairro       := SZ1->Z1_BAIRRO    
-// 	cImovel          := SZ1->Z1_IMOVEL    
-// 	cGetCEP          := SZ1->Z1_CEP      
-// 	cEstado          := SZ1->Z1_ESTADO   
-//     cGetCidade       :=	SZ1->Z1_CIDADE    
-//   /* %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-// 	    Dados Complementares 
-// 	 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-//   */    
-//     cEstadoCivil     := SZ1->Z1_ESTIVI    
-// 	nStatusPCD       := SZ1->Z1_DEFICIE  
-// 	lCheckAdvpl      := SZ1->Z1_LADVPL  
-// 	lCheckJava       := SZ1->Z1_LJAVA  
-// 	lCheckCSha       := SZ1->Z1_LCSHARP  
-// 	lCheckPyth       := SZ1->Z1_PYTHON   
-//     cMultiGetObs     := SZ1->Z1_OBS       
+  dbCloseArea()
+
 
 Return
 
